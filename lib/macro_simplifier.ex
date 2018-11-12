@@ -1,5 +1,4 @@
-
-defmodule Macrosimplifier do
+defmodule MacroSimplifier do
   def hello do
     :world
   end
@@ -13,9 +12,10 @@ defmodule Macrosimplifier do
 
 end
 
-defmodule Calculationmachine do
+# lib/calculation_machine.ex
+defmodule CalculationMachine do
   def go do
-    require Macrosimplifier
-    Macrosimplifier.interference(2 + 1)
+    require MacroSimplifier
+    MacroSimplifier.interference(2 + 1)
   end
 end

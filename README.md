@@ -1,7 +1,11 @@
 # Macrosimplifier
 
-**TODO: Add description**
+Whatever calculation you want the computer to discover is interpreted as a macro.
 
+The macro is simplified.
+<br/>Into a prefix notation syntax, enjoy 😉 .
+
+All of the relevant information is returned as the result.
 ## Installation
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed

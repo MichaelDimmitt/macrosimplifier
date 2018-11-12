@@ -6,8 +6,13 @@ defmodule MacroSimplifier do
   # {:+, [line: 50], [{:*, [line: 50], [3, 2]}, 1]}
 
   defmacro interference(macro = {op1, _, [valueOne | valueRest]}) do
-    a_str = Macro.to_string(macro)
-    IO.inspect binding()
+    [ calc: Macro.to_string(macro),
+      macro: macro |> Tuple.to_list,
+      simp: [op1, valueOne, valueRest],
+      op1: op1,
+      values: [valueOne] ++ valueRest,
+      result: macro
+    ]
   end
 
 end

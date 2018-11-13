@@ -10,4 +10,19 @@ defmodule MacroSimplifierTest do
     ]
   end
 
+  test "simplify ast: '3 * (2 + 1)' " do
+    assert MacroSimplifier.interference(3 * (2 + 1)) === []
+  end
+
+  test "simplify ast: '(3 * 2) + 1' " do
+    assert MacroSimplifier.interference((3*2)+1) === []
+  end
+
+  test "simplify ast: '3 * 2 + 1' )" do
+    assert MacroSimplifier.interference(3*2+1) === []
+  end
+
+  test "simplify ast: '3 * 2 + 1 * 7 + 2 - 1 * 2' " do
+    assert MacroSimplifier.interference(3 * 2 + 1 * 7 + 2 - 1 * 2) === []
+  end
 end

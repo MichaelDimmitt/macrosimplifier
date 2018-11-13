@@ -49,8 +49,12 @@ defmodule MacroSimplifier do
     [atom]
   end
 
-  # macro = {op1, _, list = [valueOne | valueRest]
-  def simplify(macro = {_, _, [_ | _]}) do
+  def simplify(macro = {_op1, _scope, _list = [_valueOne | _valueRest]}) do
+    #  IO.inspect macro
+    #  begin Future Goal
+    #    fullMacro = binding()
+    #    Code.eval_quoted(fullMacro |> IO.inspect())
+    #  end Future Goal
     [
       calc: Macro.to_string(macro),
       macro: macro |> Tuple.to_list(),

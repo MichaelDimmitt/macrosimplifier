@@ -7,9 +7,9 @@ defmodule MacroSimplifier do
   ## defmacro interference(macro = {op1, _, [valueOne | valueRest]}) do
   ##   [ calc: Macro.to_string(macro),
   ##     macro: macro |> Tuple.to_list,
-  ##     simp: [op1, valueOne, valueRest],
-  ##     op1: op1,
-  ##     values: [valueOne] ++ valueRest,
+  ##     simp: simplify(macro, full),
+  ##     op1: simplify(macro, operations),
+  ##     values: simplify(macro, values),
   ##     result: macro
   ##   ]
 

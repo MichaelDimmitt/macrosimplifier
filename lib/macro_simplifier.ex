@@ -32,7 +32,7 @@ defmodule MacroSimplifier do
     simplify_operations(atomOrTuple)
   end
 
-  def simplify_operations(atom) do
+  def simplify_operations(_) do
     []
   end
 
@@ -48,9 +48,7 @@ defmodule MacroSimplifier do
     [atom]
   end
 
-  def simplify(macro = {op1, _, list = [valueOne | valueRest]}) do
-    [op1, list, valueOne, valueRest]
-
+  def simplify(macro = { _ , _ , [ _ | _ ]}) do # macro = {op1, _, list = [valueOne | valueRest]
     [
       simplified_full_macro: simplify_entire(macro),
       simplified_operations: simplify_operations(macro),
@@ -60,9 +58,6 @@ defmodule MacroSimplifier do
 
   defmacro interference(macro = {op1, _, [valueOne | valueRest]}) do
     [op1, valueOne, valueRest]
-    # macro  |> exampleStillHaveTheQuotedValue()
-    # |> IO.inspect
-
     macro
     |> simplify
   end

@@ -13,6 +13,9 @@ defmodule MacroSimplifierTest do
     ##   result: 3
     ## ]
 
-    assert MacroSimplifier.interference(2 + 2 * 3) === [entire_simp: [:+, [2, [:*, [2, 3] ] ] ]]
+    assert MacroSimplifier.interference(2 + 2 * 3) === [
+      simplified_full_macro: [:+, [2, [:*, [2, 3]]]],
+      simplified_operations: [:+, :*]
+    ]
   end
 end

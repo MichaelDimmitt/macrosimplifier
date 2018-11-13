@@ -25,9 +25,22 @@ defmodule MacroSimplifier do
     atom
   end
 
+  def simplify_operations({opNext, _, [head | tail]}) do
+    [opNext] ++ simplify_operations(head) ++ simplify_operations(tail)
+  end
+
+  def simplify_operations([atomOrTuple]) do
+    simplify_operations(atomOrTuple)
+  end
+
+  def simplify_operations(atom) do
+    []
+  end
+
   def simplify(macro = {op1, _, list = [valueOne | valueRest]}) do
     [op1, list, valueOne, valueRest]
-    [entire_simp: simplify_entire(macro)]
+    [simplified_full_macro: simplify_entire(macro),
+    simplified_operations: simplify_operations(macro)]
   end
 
 

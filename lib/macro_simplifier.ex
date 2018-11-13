@@ -4,13 +4,14 @@ defmodule MacroSimplifier do
 
   ## goal
   ## defmacro interference(macro = {op1, _, [valueOne | valueRest]}) do
-  ##   [ calc: Macro.to_string(macro),
-  ##     macro: macro |> Tuple.to_list,
-  ##     simp: simplify(macro, full),
-  ##     op1: simplify(macro, operations),
-  ##     values: simplify(macro, values),
-  ##     result: macro
-  ##   ]
+  ##  [
+  ##    calc: Macro.to_string(macro),
+  ##    macro: macro |> Tuple.to_list,
+  ##    simplified_full_macro: simplify( macro, entire),
+  ##    simplified_operations: simplify( macro, operations),
+  ##    simplified_num_values: simplify( macro, values),
+  ##    result: macro
+  ##  ]
 
   def simplify_entire({opNext, _, [head | tail]}) do
     [opNext, [simplify_entire(head), simplify_entire(tail)]]
@@ -48,16 +49,21 @@ defmodule MacroSimplifier do
     [atom]
   end
 
-  def simplify(macro = { _ , _ , [ _ | _ ]}) do # macro = {op1, _, list = [valueOne | valueRest]
+  # macro = {op1, _, list = [valueOne | valueRest]
+  def simplify(macro = {_, _, [_ | _]}) do
     [
+      calc: Macro.to_string(macro),
+      macro: macro |> Tuple.to_list(),
       simplified_full_macro: simplify_entire(macro),
       simplified_operations: simplify_operations(macro),
-      simplified_num_values: simplify_values(macro)
+      simplified_num_values: simplify_values(macro),
+      result: macro
     ]
   end
 
   defmacro interference(macro = {op1, _, [valueOne | valueRest]}) do
     [op1, valueOne, valueRest]
+
     macro
     |> simplify
   end
@@ -65,12 +71,8 @@ end
 
 # lib/calculation_machine.ex
 defmodule AbacusClerk do
-
   def calculate do
     require MacroSimplifier
-
-    #    MacroSimplifier.interference(2 + 1 * 2 + 1)
-    MacroSimplifier.interference((2) + 2 * 3)
-    #    MacroSimplifier.info(2+1)
+    MacroSimplifier.interference(2 + 2 * 3)
   end
 end

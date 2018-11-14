@@ -2,16 +2,6 @@ defmodule MacroSimplifier do
   # {:*, [line: 50], [3, 3]}
   # {:+, [line: 50], [{:*, [line: 50], [3, 2]}, 1]}
 
-  ## goal
-  ## defmacro interference(macro = {op1, _, [valueOne | valueRest]}) do
-  ##   [ calc: Macro.to_string(macro),
-  ##     macro: macro |> Tuple.to_list,
-  ##     simp: simplify(macro, full),
-  ##     op1: simplify(macro, operations),
-  ##     values: simplify(macro, values),
-  ##     result: macro
-  ##   ]
-
   def simplify_entire({opNext, _, [head | tail]}) do
     [opNext, [simplify_entire(head), simplify_entire(tail)]]
   end
@@ -32,7 +22,7 @@ defmodule MacroSimplifier do
     simplify_operations(atomOrTuple)
   end
 
-  def simplify_operations(atom) do
+  def simplify_operations(_) do
     []
   end
 
@@ -48,21 +38,18 @@ defmodule MacroSimplifier do
     [atom]
   end
 
-  def simplify(macro = {op1, _, list = [valueOne | valueRest]}) do
-    [op1, list, valueOne, valueRest]
-
+  def simplify(macro = {_op1, _scope, _list = [_valueOne | _valueRest]}) do
     [
+      calc: Macro.to_string(macro),
+      macro: macro |> Tuple.to_list(),
       simplified_full_macro: simplify_entire(macro),
       simplified_operations: simplify_operations(macro),
-      simplified_num_values: simplify_values(macro)
+      simplified_num_values: simplify_values(macro),
+      result: macro
     ]
   end
 
-  defmacro interference(macro = {op1, _, [valueOne | valueRest]}) do
-    [op1, valueOne, valueRest]
-    # macro  |> exampleStillHaveTheQuotedValue()
-    # |> IO.inspect
-
+  defmacro interference(macro = {_op1, _scope, [_valueOne | _valueRest]}) do
     macro
     |> simplify
   end
@@ -70,12 +57,8 @@ end
 
 # lib/calculation_machine.ex
 defmodule AbacusClerk do
-
   def calculate do
     require MacroSimplifier
-
-    #    MacroSimplifier.interference(2 + 1 * 2 + 1)
-    MacroSimplifier.interference((2) + 2 * 3)
-    #    MacroSimplifier.info(2+1)
+    MacroSimplifier.interference(2 + 2 * 3)
   end
 end

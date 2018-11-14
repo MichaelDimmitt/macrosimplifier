@@ -2,17 +2,6 @@ defmodule MacroSimplifier do
   # {:*, [line: 50], [3, 3]}
   # {:+, [line: 50], [{:*, [line: 50], [3, 2]}, 1]}
 
-  ## goal
-  ## defmacro interference(macro = {op1, _, [valueOne | valueRest]}) do
-  ##  [
-  ##    calc: Macro.to_string(macro),
-  ##    macro: macro |> Tuple.to_list,
-  ##    simplified_full_macro: simplify( macro, entire),
-  ##    simplified_operations: simplify( macro, operations),
-  ##    simplified_num_values: simplify( macro, values),
-  ##    result: macro
-  ##  ]
-
   def simplify_entire({opNext, _, [head | tail]}) do
     [opNext, [simplify_entire(head), simplify_entire(tail)]]
   end
@@ -50,11 +39,6 @@ defmodule MacroSimplifier do
   end
 
   def simplify(macro = {_op1, _scope, _list = [_valueOne | _valueRest]}) do
-    #  IO.inspect macro
-    #  begin Future Goal
-    #    fullMacro = binding()
-    #    Code.eval_quoted(fullMacro |> IO.inspect())
-    #  end Future Goal
     [
       calc: Macro.to_string(macro),
       macro: macro |> Tuple.to_list(),
@@ -65,9 +49,7 @@ defmodule MacroSimplifier do
     ]
   end
 
-  defmacro interference(macro = {op1, _, [valueOne | valueRest]}) do
-    [op1, valueOne, valueRest]
-
+  defmacro interference(macro = {_op1, _scope, [_valueOne | _valueRest]}) do
     macro
     |> simplify
   end
